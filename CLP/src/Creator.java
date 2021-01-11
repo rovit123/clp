@@ -1,0 +1,490 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author Rovit
+ */
+public class Creator extends javax.swing.JFrame {
+   public int id;
+   public String name;
+   public String place;
+    public Connection cn;
+    public Statement st;
+    
+    /**
+     * Creates new form Creator
+     */
+    public Creator() {
+        initComponents();
+   
+        Show_Users_In_JTable();
+        Show_Users_In_JTable1();
+        Show_Users_In_JTable2();
+    }
+
+    Creator(int id) {
+        initComponents();
+       this.id=id;
+       try{
+            Class.forName("com.mysql.jdbc.Driver");
+            cn=DriverManager.getConnection("jdbc:mysql://localhost:3306/job_portal?zeroDateTimeBehavior=convertToNull","root","");
+            st=cn.createStatement();
+            JOptionPane.showMessageDialog(null,"Connected");
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,"Not Connected");
+        }
+       Show_Users_In_JTable();
+        Show_Users_In_JTable1();
+          Show_Users_In_JTable2();
+    }
+           public ArrayList<typeofjob> getUsersList()
+   {
+       ArrayList<typeofjob> usersList = new ArrayList<typeofjob>();
+      
+       String query = "SELECT * FROM  jobcreate j,userdetails u WHERE u.id="+id+" and j.id=u.id ";
+               try {
+           ResultSet rs;
+           rs = st.executeQuery(query);
+           typeofjob display;
+           while(rs.next())
+           {
+               display = new typeofjob(rs.getInt("id"),rs.getString("name"),rs.getString("typeofjob"),rs.getString("place"));
+               usersList.add(display);
+           }
+       } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+       }
+       return usersList;
+   }
+   
+   // Display Data In JTable
+   
+   public void Show_Users_In_JTable()
+   {
+       ArrayList<typeofjob> list = getUsersList();
+       DefaultTableModel model = (DefaultTableModel)jobtype.getModel();
+       Object[] row = new Object[1];
+       for(int i = 0; i < list.size(); i++)
+       {
+           row[0] = list.get(i).getjob();
+
+           
+           model.addRow(row);
+       }
+    }
+    
+   
+   // Display Data In JTable
+    public ArrayList<typeofjob> getUsersList1()
+   {
+       ArrayList<typeofjob> usersList = new ArrayList<typeofjob>();
+      
+       String query = "SELECT * FROM  jobapplied j,userdetails u,jobcreate jc WHERE idc="+id+" and j.ids=u.id and jc.jobid=j.jobid";     
+                        
+       try {
+           ResultSet rs;
+           rs = st.executeQuery(query);
+           typeofjob display;
+           while(rs.next())
+           {
+
+               display = new typeofjob(rs.getString("name"),rs.getInt("ids"),rs.getString("typeofjob"));
+               usersList.add(display);
+           }
+       } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+       }
+       return usersList;
+   }
+   public void Show_Users_In_JTable1()
+   {
+       ArrayList<typeofjob> list = getUsersList1();
+       DefaultTableModel model = (DefaultTableModel)applied.getModel();
+       Object[] row = new Object[3];
+       for(int i = 0; i < list.size(); i++)
+       {
+           row[0] = list.get(i).getid();
+            row[1] = list.get(i).name();
+             row[2] = list.get(i).getjob();
+
+           
+           model.addRow(row);
+       }
+    }
+      public ArrayList<typeofjob> getUsersList2()
+   {
+       ArrayList<typeofjob> usersList = new ArrayList<typeofjob>();
+      
+       String query = "SELECT * FROM  approved a,jobcreate jc WHERE a.idc="+id+" and jc.jobid=a.jobid";     
+       try {
+           ResultSet rs;
+           rs = st.executeQuery(query);
+           typeofjob display;
+           while(rs.next())
+           {
+               display = new typeofjob(rs.getInt("ids"),rs.getString("typeofjob"));
+               usersList.add(display);
+           }
+       } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+       }
+       return usersList;
+   }
+   
+   // Display Data In JTable
+   
+   public void Show_Users_In_JTable2()
+   {
+       ArrayList<typeofjob> list = getUsersList2();
+       DefaultTableModel model = (DefaultTableModel)approved.getModel();
+       Object[] row = new Object[2];
+       for(int i = 0; i < list.size(); i++)
+       {
+           row[0] = list.get(i).getid1();
+              row[1] = list.get(i).getjob();
+
+           
+           model.addRow(row);
+       }
+    }
+    
+
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jobtype = new javax.swing.JTable();
+        typeofjob = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jobcreate = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        applied = new javax.swing.JTable();
+        jLabel2 = new javax.swing.JLabel();
+        id1 = new javax.swing.JTextField();
+        typeofjob1 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        approve = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        delete = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        approved = new javax.swing.JTable();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(255, 102, 204));
+
+        jobtype.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Type Of Job Created"
+            }
+        ));
+        jScrollPane1.setViewportView(jobtype);
+
+        jLabel1.setText("Enter the job name you want to create/delete");
+
+        jobcreate.setText("Create");
+        jobcreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jobcreateActionPerformed(evt);
+            }
+        });
+
+        applied.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Name", "Typeofjob"
+            }
+        ));
+        jScrollPane2.setViewportView(applied);
+
+        jLabel2.setText("Approve");
+
+        id1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                id1ActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("id");
+
+        jLabel4.setText("Type of Job");
+
+        approve.setText("Approve");
+        approve.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                approveActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Applied");
+
+        delete.setText("Delete");
+        delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Jobs Created");
+
+        approved.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "TypeofJob"
+            }
+        ));
+        jScrollPane3.setViewportView(approved);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jobcreate)
+                            .addGap(58, 58, 58)
+                            .addComponent(delete))
+                        .addComponent(typeofjob, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(43, 43, 43)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(105, 105, 105))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(340, 340, 340))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(38, 38, 38))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(82, 82, 82)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(74, 74, 74)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(typeofjob1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(approve)
+                                    .addComponent(id1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(typeofjob, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(delete)
+                            .addComponent(jobcreate)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 177, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(id1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(typeofjob1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addGap(28, 28, 28)
+                        .addComponent(approve)
+                        .addGap(30, 30, 30)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 224, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jobcreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jobcreateActionPerformed
+        // TODO add your handling code here:
+            String query;
+    query = "INSERT INTO jobcreate(id,typeofjob) VALUES ('"+id+"','"+typeofjob.getText()+"')";
+    try {
+            int res=st.executeUpdate(query);
+            JOptionPane.showMessageDialog(null, "Added");
+                Creator creator1 = new Creator(id);
+                creator1.setVisible(true);
+            this.dispose();
+      
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+       
+        }
+    
+    
+    }//GEN-LAST:event_jobcreateActionPerformed
+
+    private void id1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_id1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_id1ActionPerformed
+
+    private void approveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_approveActionPerformed
+        // TODO add your handling code here:
+        String query1;   
+       query1 = "SELECT * FROM  jobapplied j,jobcreate jc WHERE j.ids="+id1.getText()+" and jc.typeofjob='"+typeofjob1.getText()+"' and j.jobid=jc.jobid ";
+        ResultSet rs1 ;
+        String query;
+        try {
+            rs1 = st.executeQuery(query1);
+            rs1.next();
+            query = "INSERT INTO approved(idc, ids,jobid) VALUES ('"+id+"','"+rs1.getString("ids")+"','"+rs1.getString("jobid")+"')";
+            int res=st.executeUpdate(query);
+            Creator creator1 = new Creator(id);
+            creator1.setVisible(true);
+            this.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+
+        }
+    }//GEN-LAST:event_approveActionPerformed
+
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+        // TODO add your handling code here:
+                String query;
+    query = "delete from jobcreate where typeofjob='"+typeofjob.getText()+"' and id="+id+"";
+    try {
+            int res=st.executeUpdate(query);
+            JOptionPane.showMessageDialog(null, "Deleted");
+                Creator creator1 = new Creator(id);
+                creator1.setVisible(true);
+            this.dispose();
+      
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+       
+        }
+    }//GEN-LAST:event_deleteActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Creator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Creator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Creator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Creator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Creator().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable applied;
+    private javax.swing.JButton approve;
+    private javax.swing.JTable approved;
+    private javax.swing.JButton delete;
+    private javax.swing.JTextField id1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JButton jobcreate;
+    private javax.swing.JTable jobtype;
+    private javax.swing.JTextField typeofjob;
+    private javax.swing.JTextField typeofjob1;
+    // End of variables declaration//GEN-END:variables
+}
